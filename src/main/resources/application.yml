@@ -13,3 +13,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+server:
+  servlet:
+    session:
+      timeout: 120m

@@ -6,7 +6,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+/*
+✅Spring Security
+1. 유저 로그인 시 UserDetailsService.loadUserByUserName(username) 실행
+2. 반환된 UserDetails에서 비밀번호/권한 확인
+3. 인증 완료 시 SecurityContext에 저장
+
+따라서 (1) UserDetails를 구현한 사용자 정보 클래스 와 (2) UserDetailsSerivce 를 구현해서 사용자 정보를 DB에서 가져오는 서비스 둘을 요구함
+ */
 
 public class CustomUserDetails implements UserDetails {
 
