@@ -2,6 +2,8 @@ package com.example.SpringSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,14 +19,29 @@ public class SecurityConfig {
     }
 
     @Bean
+    public RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.fromHierarchy("""
+                ROLE_OWNER > ROLE_MANAGER
+                ROLE_MANAGER > ROLE_USER
+                """);
+        /* 자동으로 ROLE_ 접두사 붙여주는 방식
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+            .role("OWNER").implies("MANAGER")
+            .role("MANAGER").implies("USER")
+            .build();
+        */
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // 인가
         http
                 .authorizeHttpRequests((auth) -> auth // 특정 경로에 요청 허용, 거부 처리
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc") .permitAll() // permitAll: 로그인 필요없이 모두
-                        .requestMatchers("/admin").hasRole("ADMIN") // hasRole: 특정 role
-                        .requestMatchers("/my/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/my/**").hasAnyRole("USER") // hasRole: 특정 role
+                        .requestMatchers("/admin").hasAnyRole("ADMIN")
+                        .requestMatchers("/owner").hasAnyRole("OWNER")
                         .anyRequest().authenticated() // 나머지 경로- authenticated: 로그인만 하면 가능
                 );
 
