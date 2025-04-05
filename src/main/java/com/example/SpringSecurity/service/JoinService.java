@@ -24,7 +24,7 @@ public class JoinService {
         UserEntity data = new UserEntity();
         data.setUsername(joinDto.getUsername());
         data.setPassword(bCryptPasswordEncoder.encode(joinDto.getPassword())); // 비밀번호 암호화
-        data.setRole("ROLE_USER");
+        data.setRole("ROLE_ADMIN");
         userRepository.save(data);
     }
 }

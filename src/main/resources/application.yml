@@ -2,10 +2,10 @@ spring:
   application:
     name: SpringSecurity
   datasource:
-    url: jdbc:mysql://localhost:3306/test
-    username: uu
-    password: 0123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/test
+    username: hyo
+    password: 0729
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
